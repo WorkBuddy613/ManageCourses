@@ -1,17 +1,35 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import ManageCoursePage from "./pages/ManageCoursePage.js";
+import "./index.css";
+
+var CourseList = [
+  {id:0},
+
+  {id:1 + Math.random, 
+  name: "Chest Workout",
+  introduction:{id: 2313+ Math.random, title: "Chest Workout", Subscription: false, image : "https://image.winudf.com/v2/image/Y29tLmJvdWF6emFvdWkuY2hlc3R3b3Jrb3V0X3NjcmVlbl8wX3V5ZGdoMmd0/screen-0.jpg?fakeurl=1&type=.jpg", Total_Enrollments : 54, Description: "The chest muscles are made up of the pectoralis major and, underneath that, the pectoralis minor. The pectoralis major is the larger muscle and has two parts—an upper portion (called the clavicular head) and the lower portion (called the sternal head).The chest muscles are responsible for moving the arms across the body and up and down, as well as other movements like flexion, adduction, and rotation. Most chest exercises will involve pushing the arms away from the body or the body away from the arms. Some of the most common chest exercises include pushups, chest presses, and chest flies. Choose a mixture of different exercises to target your chest from a variety of directions and make sure you vary your routine every four to six weeks to avoid plateaus.", Tags:[{id:0, name:""},{id: 2334 + Math.random, name:"Accessbility"}] },
+  syllabus: "This is syllabus for Chest Workout",
+  AnnouncementList:[{id:0},{id: Math.random + 1897 , text: "Lay on a flat bench, gripping dumbbells in each hand. Press the weights up above your chest, keeping them from touching, with your pinkies turned slightly inward. Maintain full body tension on the bench", datetime:"25-10-2020 08:55:03"},{id: Math.random + 422, text:"Another annoucement", datetime:"27-10-2020 08:55:03"}],
+  LessonList: [{id:0},{id :Math.random + 31, lesson: "Lesson 01", videoLink: "https://www.youtube.com/watch?v=mQMA88jJrFc", text: "Sure, we just talked about branching out beyond the bench press. But you can't avoid the exercise if you're serious about training—or even if you just step foot into any typical strength facility in the world. The move is standard for a reason: it works."},{id: Math.random + 541, lesson: "Lesson 02" , videoLink: "https://www.youtube.com/watch?v=mQMA88jJrFc",text:"Lay on a flat bench, gripping dumbbells in each hand. Press the weights up above your chest, keeping them from touching, with your pinkies turned slightly inward. Maintain full body tension on the bench"}, {id:Math.random+1434, lesson: "Lesson 03" , videoLink: "https://www.youtube.com/watch?v=mfTnowfhW2c", text: "Lift your dumbbells up, squeezing the handles tightly. Once your back is on the bench, don't just hold the weights with your elbows parallel to your shoulders. Keep your elbows at a 45-degree angle to help to keep your shoulders safe. Squeeze your chest to drive the weight up, then lower under control under the same path to just above your chest. Drive back up to hit another rep."}]},
+
+  {id:2 + Math.random, 
+  name: "Arms Workout",
+  introduction:{id: 333+ Math.random, title: "Arms Workout", Subscription: false, image : "https://as2.ftcdn.net/jpg/02/20/64/67/500_F_220646776_r6zsv3KHgJcc9O3g2axZKZqgAzWaXiBE.jpg", Total_Enrollments : 54, Description: "If you want to mix your leg workout with some cardio and core work, this routine is a must-try. The circuit, created by ACE-certified personal trainer Amy Eisinger, starts with a leg-blasting curtsy lunge to lateral lunge combo, before going into a skater (agility and balance work!) and then some core moves.", Tags:[{id:0, name:""},{id: 2334 + Math.random, name:"Accessbility"}] },
+  syllabus: "This is syllabus for Arms Workout",
+  AnnouncementList:[{id:0},{id: Math.random + 97 , text: "This Is Annoucement 1 for Arms Workout", datetime:"25-10-2020 08:55:03"},{id: Math.random + 432, text:"This is annoucement no 2 for arms", datetime:"27-10-2020 08:55:03"}],
+  LessonList: [{id:0},{id :Math.random + 11, lesson: "Lesson 01", videoLink: "https://www.youtube.com/watch?v=cF0niVnmMY0", text: "The plan contains two two-week blocks. The first has four sessions a week: chest and back; legs and abs; biceps and triceps; and shoulders and arms. The second has four sessions a week: chest and back; legs and shoulders; chest and triceps; and back and biceps."},{id: Math.random + 51, lesson: "Lesson 02" , videoLink: "https://www.youtube.com/watch?v=yH1dSycnp24",text:"Each workout has six moves you’ll do as straight sets, sticking to the sets, reps, tempo and rest detailed. Tempo is the speed at which you lift and lower the weight in seconds. A 3010 tempo means you take three seconds to lower it and one to raise it, with no pause at the top or bottom."}]},
+
+  {id:3 + Math.random,
+  name: "Legs Workout", 
+  introduction:{id: 222313+ Math.random, title: "Legs Workout ", Subscription: false, image : "https://previews.123rf.com/images/subtropica/subtropica1805/subtropica180500023/102275101-leg-day-workout-and-fitness-gym-design-element-concept-creative-custom-vector-sign-on-grunge-backgro.jpg", Total_Enrollments : 514, Description: "When you think of leg exercises, odds are high your mind goes straight to squats, deadlifts, and variations thereof. But lower body moves enlist more than just your quads and hamstrings.", Tags:[{id:0, name:""},{id: 23394 + Math.random, name:"Accessbility"}] },
+  syllabus: "This is syllabus for Legs Workout",
+  AnnouncementList:[{id:0},{id: Math.random + 18197 , text: "This is annoucement no 1 for legs workout", datetime:"25-10-2020 08:55:03"},{id: Math.random + 4122, text:"This is 2nd Annoucement for Legs workout", datetime:"27-10-2020 08:55:03"}],
+  LessonList: [{id:0},{id :Math.random + 315, lesson: "Lesson 01", videoLink: "https://www.youtube.com/watch?v=aCa8R9II8F0", text: "If you find yourself losing interest in your same old leg workout, we have the solution for you: a sampling of the best leg workouts from SELF over the past couple of years, so you can be sure to have a fresh new workout to plug into your lower-body day whenever you find your enthusiasm waning."},{id: Math.random + 53341, lesson: "Lesson 02" , videoLink: "https://www.youtube.com/watch?v=N5PN7G06pKg",text:"Kettlebells are great for adding explosiveness and power to your strength routine, and this circuit does just that. Created by personal trainer Samantha Ciaccia, M.S., C.S.C.S., this leg workout consists of only four moves—but after you complete two circuits, you’ll definitely be sweating, and your quads, hamstrings, and butt will be feeling it. Consider adding this to your workout if you’re looking to improve your functional fitness: Working on your power now can help your body protect against injury as you age, says Ciaccia."}, {id:Math.random+14374, lesson: "Lesson 03" , videoLink: "https://www.youtube.com/watch?v=mfTnowfhW2c", text: "If you’re looking to get stronger with your leg workouts, barbells are a great tool to help you get there. That’s because they’re super easy to add resistance to—you simply put more plates on the bar. That means you can continue to challenge yourself with more weight, without having to worry about the barbell becoming bulkier or harder to grasp. If you’re new to lifting with barbells, this four-move strength workout by certified personal trainer Morit Summers, owner of Form Fitness Brooklyn, is a great way to get started, because it makes the most of basic exercises: the squat, lunge, deadlift, and hip thrust. Note: A standard barbell weighs 45 pounds, so you may want to start with just that, at least until you get comfortable with it."}]}
+  
+]
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <ManageCoursePage Courses={CourseList}/>, 
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

@@ -1,0 +1,127 @@
+body {
+    background-color: #FFCC00;
+    padding: 20px;
+    margin: 0;
+  }
+  h1, h2, p, ul, li {
+    font-family: sans-serif;
+  }
+  
+  img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 150px;
+  }
+  
+  ul.header li {
+    list-style-type: none;
+    margin: 0;
+  }
+  ul.header {
+    background-color: #111;
+    padding: 0;
+    text-align: center;
+  }
+  ul.header li a {
+    color: #FFCC00;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 20px;
+    display: list-item;
+  
+  }
+  .content {
+    background-color: #FFCC00;
+    padding: 20px;
+  }
+  .content h2 {
+    padding: 0;
+    margin: 0;
+  }
+  .content li {
+    margin-bottom: 10px;
+  }
+
+  input[type=textarea] {
+    width: 100%;
+    height: 150px;
+    padding: 5px 5px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+    text-align: justify;
+  }
+  
+  select{
+    background: rgb(255, 255, 255);
+    width: 100%;
+    padding: 2px;
+    font-family:sans-serif;
+    font-size:14px;
+    font-weight:600;
+    color:rgb(0, 0, 0);
+    line-height: 1;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    height: 22px;
+    -webkit-appearance: none;
+  }
+
+  input[type=text] {
+    width: 98%;
+    background-color: white;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding-left: 10px;
+  }
+
+  ul li {
+    display: inline;
+    list-style-type: none;
+    margin: 0;
+  }
+  
+  label{
+    font-family:sans-serif;
+    font-size:14px;
+    font-weight:600;
+    color:rgb(0, 0, 0);
+    position: center;
+  }
+
+  button.In-Modal-button {
+    background-color: #60af4c;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  button.Modal-close-button {
+    background-color: #ff0404;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  button.Modal-open-button {
+    background-color: #f10000;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
