@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import React, { Component } from "react";
 import ReactModal from 'react-modal-resizable-draggable';
 
@@ -10,10 +11,13 @@ class Introduction extends Component {
             modalIsOpen: false,
             id: 2313+ Math.random,
             title: "Chest and Arms Workout",
+            new_title: "",
             Subscription: false,
             image : "https://image.winudf.com/v2/image/Y29tLmJvdWF6emFvdWkuY2hlc3R3b3Jrb3V0X3NjcmVlbl8wX3V5ZGdoMmd0/screen-0.jpg?fakeurl=1&type=.jpg",
+            new_image: "",
             Total_Enrollments : 547,
             Description: "If you want to mix your leg workout with some cardio and core work, this routine is a must-try. The circuit, created by ACE-certified personal trainer Amy Eisinger, starts with a leg-blasting curtsy lunge to lateral lunge combo, before going into a skater (agility and balance work!) and then some core moves.",
+            new_Description: "",
             tag_id:0,
             tag_name:"",
             Tags:[{id:0, name:""},{id: 23394 + Math.random, name:"Accessbility"}]
@@ -24,6 +28,7 @@ class Introduction extends Component {
         this.closeModal = this.closeModal.bind(this);
         this.addTag = this.addTag.bind(this);
         this.removeTag = this.removeTag.bind(this);
+        this.updateIntroduction = this.updateIntroduction.bind(this);
     }
 
 
@@ -40,9 +45,15 @@ class Introduction extends Component {
         this.setState({tag_name:""});
     } 
     removeTag() {
-          const newTags = this.state.Tags.filter(Tag => Tag.id !== this.state.tag_id);
-          this.setState({Tags: newTags});
-          this.setState({tag_id:0});
+        const newTags = this.state.Tags.filter(Tag => Tag.id !== this.state.tag_id);
+        this.setState({Tags: newTags});
+        this.setState({tag_id:0});
+    }
+    updateIntroduction(){
+        // eslint-disable-next-line no-lone-blocks
+        {this.state.new_title ? this.setState({title: this.state.new_title}) : this.setState({new_title: ""})};
+        {this.state.new_image ? this.setState({image: this.state.new_image}) : this.setState({new_title: ""})};
+        {this.state.new_Description ? this.setState({Description: this.state.new_Description}) : this.setState({new_Description: ""})};
     }
 
 
@@ -50,21 +61,22 @@ class Introduction extends Component {
         return (
             <div className="Intro_Page">
                 <button className="Modal-open-button" onClick={this.openModal}> Edit Course Introduction </button>
-                <ReactModal initHeight={550} onFocus={() => console.log("Modal is clicked")} className={"editing-course-intro-page"} onRequestClose={this.closeModal}  isOpen={this.state.modalIsOpen}>
+                <ReactModal initHeight={600} onFocus={() => console.log("Modal is clicked")} className={"editing-course-intro-page"} onRequestClose={this.closeModal}  isOpen={this.state.modalIsOpen}>
                     <h3>Edit Course Information</h3>
                     <div className="intro-form-group">
                         <div>
                         <label>Edit Title:</label>
-                        <input type="text" className="Edit_Title" value={this.state.title} onChange={e => this.setState({title: e.target.value})}/>
+                        <input type="text" className="Edit_Title" value={this.state.new_title} onChange={e => this.setState({new_title: e.target.value})}/>
                         </div>
                         <div>
                         <label>Enter Image URL:</label>
-                        <input type="text" className="Edit_image_url" value={this.state.image} onChange={e => this.setState({image: e.target.value})}/>
+                        <input type="text" className="Edit_image_url" value={this.state.new_image} onChange={e => this.setState({new_image: e.target.value})}/>
                         </div>
                         <div>
                         <label>Edit Description:</label>
-                        <input type="textarea" className="Edit_Description" value={this.state.Description} onChange={e => this.setState({Description: e.target.value})}/>
+                        <input type="textarea" className="Edit_Description" value={this.state.new_Description} onChange={e => this.setState({new_Description: e.target.value})}/>
                         </div>
+                        <div><button  className="In-Modal-button" type="button" onClick={this.updateIntroduction} > Update </button></div>
                         <div>
                             <label>Add Tag:</label>
                             <input type="text" className="Tag" value={this.state.tag_name} onChange={e => this.setState({tag_name: e.target.value})}/>

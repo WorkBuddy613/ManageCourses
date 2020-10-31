@@ -7,21 +7,25 @@ class AddSyllabus extends Component {
         super();
         this.state = {
             modalIsOpen: false,
-            text:""
+            text:"",
+            newText: ""
         };
         
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.addSyllabus = this.addSyllabus.bind(this);
     }
 
     openModal() {
         this.setState({modalIsOpen: true});
-        }
-    
+    }
     closeModal() {
         this.setState({modalIsOpen: false});
-        }
-
+    }
+    addSyllabus(){
+        this.setState({text: this.state.newText});
+        this.setState({newText: ""});
+    }
 
     render() {
         return (
@@ -30,7 +34,8 @@ class AddSyllabus extends Component {
                 <ReactModal onFocus={() => console.log("Modal is clicked")} className={"editing-course-syllabus-page"} onRequestClose={this.closeModal}  isOpen={this.state.modalIsOpen}>
                     <div>
                     <label>Add/Edit Syllabus </label>
-                    <input className="Syllabus-area" type="textarea" value={this.state.text} onChange={event => this.setState({text: event.target.value})}/>
+                    <input className="Syllabus-area" type="textarea" value={this.state.newText} onChange={event => this.setState({newText: event.target.value})}/>
+                    <div><button className="In-Modal-button" onClick={this.addSyllabus}>Add</button></div>
                     <div><button className="Modal-close-button" onClick={this.closeModal}> Cancel </button></div>
                     </div>
                 </ReactModal>

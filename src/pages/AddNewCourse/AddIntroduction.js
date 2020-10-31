@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import React, { Component } from "react";
 import ReactModal from 'react-modal-resizable-draggable';
 import './AddIntroduction.css';
@@ -10,10 +11,13 @@ class AddIntroduction extends Component {
         this.state = {
             modalIsOpen: false,
             title: "",
+            new_title: "",
             Subscription: false,
             image : "",
+            new_image: "",
             Total_Enrollments : 0,
             Description: "",
+            new_Description: "",
             tag_id:0,
             tag_name:"",
             Tags:[{id:0, name:""}]
@@ -23,6 +27,7 @@ class AddIntroduction extends Component {
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.addTag = this.addTag.bind(this);
+        this.addIntroduction = this.addIntroduction.bind(this);
     }
 
 
@@ -37,27 +42,35 @@ class AddIntroduction extends Component {
         this.setState({Tags :this.state.Tags.concat({id: Math.random + key, name: this.state.tag_name})});
         this.setState({tag_id:0});
         this.setState({tag_name:""});
-      }
+    }
+    addIntroduction(){
+        // eslint-disable-next-line no-lone-blocks
+        {this.state.new_title ? this.setState({title: this.state.new_title}) : this.setState({new_title: ""})};
+        {this.state.new_image ? this.setState({image: this.state.new_image}) : this.setState({new_title: ""})};
+        {this.state.new_Description ? this.setState({Description: this.state.new_Description}) : this.setState({new_Description: ""})};
+    
+    }
 
     render() {
         return (
             <div className="Intro_Page">
                 <button className="Modal-open-button" onClick={this.openModal}> Add Course Introduction </button>
-                <ReactModal initHeight={450} onFocus={() => console.log("Modal is clicked")} className={"editing-course-intro-page"} onRequestClose={this.closeModal}  isOpen={this.state.modalIsOpen}>
+                <ReactModal initHeight={500} onFocus={() => console.log("Modal is clicked")} className={"editing-course-intro-page"} onRequestClose={this.closeModal}  isOpen={this.state.modalIsOpen}>
                     <h3>Add Course Information</h3>
                     <div className="intro-form-group">
                     <div>    
-                    <label>Add/Edit Title:</label>
-                    <input type="text" className="Edit_Title" value={this.state.title} onChange={e => this.setState({title: e.target.value})}/>
+                        <label>Edit Title:</label>
+                        <input type="text" className="Edit_Title" value={this.state.new_title} onChange={e => this.setState({new_title: e.target.value})}/>
                     </div>
                     <div>
-                    <label>Add/Edit Image URL:</label>
-                    <input type="text" className="Edit_image_url" value={this.state.image} onChange={e => this.setState({image: e.target.value})}/>
+                        <label>Enter Image URL:</label>
+                        <input type="text" className="Edit_image_url" value={this.state.new_image} onChange={e => this.setState({new_image: e.target.value})}/>
                     </div>
                     <div>
-                    <label>Add/Edit Description:</label>
-                    <input type="textarea" className="Edit_Description" value={this.state.Description} onChange={e => this.setState({Description: e.target.value})}/>
+                        <label>Edit Description:</label>
+                        <input type="textarea" className="Edit_Description" value={this.state.new_Description} onChange={e => this.setState({new_Description: e.target.value})}/>
                     </div>
+                    <div><button  className="In-Modal-button" type="button" onClick={this.addIntroduction} > Add Introduction </button></div>
                     <div>
                     <label>Add Tag:</label>
                     <input type="text" className="Tag" value={this.state.tag_name} onChange={e => this.setState({tag_name: e.target.value})}/>

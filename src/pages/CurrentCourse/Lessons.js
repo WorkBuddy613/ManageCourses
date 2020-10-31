@@ -88,7 +88,7 @@ render() {
                         <label>Add Lesson Description:</label>
                         <input className="lesson-text-area" type="textarea" value={this.state.add_description} onChange={event =>this.setState({ add_description: event.target.value })}/>
                       </div>
-                        <div><button className="In-Modal-button" type="button" onClick={this.addLesson} disabled={!(this.state.add_description)}> Add </button></div>
+                      <div><button className="In-Modal-button" type="button" onClick={this.addLesson} disabled={!(this.state.add_description)}> Add </button></div>
               </div>
               <div>
                 <label> Remove Lesson</label>
