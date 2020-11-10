@@ -1,6 +1,23 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from "react";
 import ReactModal from 'react-modal-resizable-draggable';
+import { API, graphqlOperation } from 'aws-amplify';
+import { createCourse, updateCourse} from '../../graphql/mutations';
+import { listCourses } from '../../graphql/queries';
+
+
+async function createNewCourse(course){
+    console.log("in createNewCourse", course);
+    const newCourseDetails = { 
+      title: course.title,
+      introduction: course.introduction,
+      syllabus: ""
+      //courseId, course, comments is now empty
+    };
+    console.log(newCourseDetails);
+    const newCourse = await API.graphql(graphqlOperation(createCourse, {input: newCourseDetails}));    
+    console.log("new Course created in database successfully", newCourse);
+}
 
 class Introduction extends Component {
 
@@ -36,6 +53,10 @@ class Introduction extends Component {
         this.setState({modalIsOpen: true});
     }
     closeModal() {
+        createNewCourse({
+            title: this.state.title,
+            introduction: this.state.description,
+        });
         this.setState({modalIsOpen: false});
     }
     addTag() {
@@ -51,6 +72,10 @@ class Introduction extends Component {
     }
     updateIntroduction(){
         // eslint-disable-next-line no-lone-blocks
+         createNewCourse({
+            title: this.state.title,
+            introduction: this.state.description,
+        });
         {this.state.new_title ? this.setState({title: this.state.new_title}) : this.setState({new_title: ""})};
         {this.state.new_image ? this.setState({image: this.state.new_image}) : this.setState({new_title: ""})};
         {this.state.new_Description ? this.setState({Description: this.state.new_Description}) : this.setState({new_Description: ""})};

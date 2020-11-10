@@ -1,8 +1,39 @@
 import React, { Component } from "react";
 import ReactModal from 'react-modal-resizable-draggable';
-import {LessonIterator} from './../../components/LessonIterator';
+import {LessonIterator} from '../../components/LessonIterator';
+import { API, graphqlOperation } from 'aws-amplify';
+import { createLesson, updateLesson} from '../../graphql/mutations';
+import { listLessons } from '../../graphql/queries';
 
- 
+async function createNewLesson(lesson){
+    console.log("in createNewLesson", lesson);
+    const newLessonDetails = { 
+      title: lesson.title,
+      likeCount: 0,
+      videoLink: lesson.videoLink,
+      content: lesson.content,
+      courseID: "b203fac1-4d9a-40af-9755-3390d4ba73ec",
+      
+      //courseId, course, comments is now empty
+    };
+    console.log(newLessonDetails);
+    const newLesson = await API.graphql(graphqlOperation(createLesson, {input: newLessonDetails}));  
+    /*
+    createLesson learning note:
+    1. AppSync will generate created&updatedAt automatically here 
+    2. graphqlOperation is a helper function. 
+    Without it, it wil look more verbose like ⬇️: //But seems fine haha
+    const newTodo = awiat API.graphql({ query: createTodo, variable: {input: todoDetails}})  
+    */    
+    console.log("new Lesson created in database successfully", newLesson);
+}
+
+async function listCurrentLessons(){ 
+    const allLessons = await API.graphql(graphqlOperation(listLessons));
+    console.log("Fetch current comments from database successfully", allLessons);
+    return allLessons;
+}
+
 class AddLessons extends Component {
   constructor() {
   super();
@@ -12,7 +43,19 @@ class AddLessons extends Component {
     add_link:"",
     modalIsOpen: false,
     LessonList:[{id:0}]};
-
+  listCurrentLessons().then((evt) => {
+                evt.data.listLessons.items.map((lesson, i)=> {
+                    this.state.LessonList.push({
+                      id: lesson.id, 
+                      add_description: lesson.content,
+                      lesson_add: lesson.title,
+                      add_link: lesson.videoLink
+                    });
+                });
+                this.setState({
+                    LessonList: this.state.LessonList
+                })
+            }) 
   
   this.openModal = this.openModal.bind(this);
   this.closeModal = this.closeModal.bind(this);
@@ -29,6 +72,12 @@ closeModal() {
 }
 
 addLesson() {
+  var lesson = {
+    title: this.state.lesson_add,
+    videoLink: this.state.add_link,
+    content: this.state.add_description
+  }
+  createNewLesson(lesson);
   var key = 1+ Math.floor(Math.random() * (100000-1));
   this.setState({LessonList :this.state.LessonList.concat({id: Math.random + key,lesson: this.state.lesson_add, videoLink: this.state.add_link, text:this.state.add_description})});
   this.setState({add_description:""});

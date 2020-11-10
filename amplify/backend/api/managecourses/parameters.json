@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "managecourses",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authmanagecourses4a6665484a666548",
+            "Outputs.UserPoolId"
+        ]
+    }
+}
