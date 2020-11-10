@@ -9,7 +9,11 @@ import {
   import AddAnnouncements from "./AddNewCourse/AddAnnouncements";
   import AddSyllabus from "./AddNewCourse/AddSyllabus";
   import AddLessons from "./AddNewCourse/AddLessons";
-    
+  
+import { API, graphqlOperation } from 'aws-amplify';
+import { createLesson, updateLesson} from '../../graphql/mutations';
+import { listLessons } from '../../graphql/queries';
+ 
   class AddNewCourse extends Component {
 
     constructor() {
