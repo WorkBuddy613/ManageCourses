@@ -3,6 +3,24 @@ import React, { Component } from "react";
 import ReactModal from 'react-modal-resizable-draggable';
 import './AddIntroduction.css';
 
+import { API, graphqlOperation } from 'aws-amplify';
+import { createCourse, updateCourse} from '../../graphql/mutations';
+import { listCourses } from '../../graphql/queries';
+
+
+async function createNewCourse(course){
+    console.log("in createNewCourse", course);
+    const newCourseDetails = { 
+      title: course.title,
+      introduction: course.introduction,
+      syllabus: ""
+      //courseId, course, comments is now empty
+    };
+    console.log(newCourseDetails);
+    const newCourse = await API.graphql(graphqlOperation(createCourse, {input: newCourseDetails}));    
+    console.log("new Course created in database successfully", newCourse);
+}
+
 class AddIntroduction extends Component {
 
     constructor() {
@@ -45,10 +63,14 @@ class AddIntroduction extends Component {
     }
     addIntroduction(){
         // eslint-disable-next-line no-lone-blocks
+
         {this.state.new_title ? this.setState({title: this.state.new_title}) : this.setState({new_title: ""})};
         {this.state.new_image ? this.setState({image: this.state.new_image}) : this.setState({new_title: ""})};
         {this.state.new_Description ? this.setState({Description: this.state.new_Description}) : this.setState({new_Description: ""})};
-    
+        createNewCourse({
+            title: this.state.new_title,
+            introduction: this.state.new_Description,
+        });
     }
 
     render() {

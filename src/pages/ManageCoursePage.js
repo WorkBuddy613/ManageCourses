@@ -9,7 +9,11 @@ import {
 import CurrentCoursesListPage from "./CurrentCoursesListPage";
 import AddNewCourse from "./AddNewCourse";
 import RemoveCourse from "./RemoveCourse";
-  
+import Amplify, { Auth } from 'aws-amplify';   
+import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'; 
+import awsconfig from '../aws-exports';
+
+Amplify.configure(awsconfig);
 class ManageCoursePage extends Component {
   render() {
     return (
@@ -32,4 +36,4 @@ class ManageCoursePage extends Component {
   }
 }
  
-export default ManageCoursePage;
+export default withAuthenticator(ManageCoursePage);
