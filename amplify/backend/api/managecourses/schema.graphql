@@ -3,7 +3,6 @@ type Course @model {
   title: String!
   introduction: String!
   syllabus: String!
-  tags: [String!]!
   lessons: [Lesson] @connection(keyName: "byCourse", fields: ["id"])
   announcements: [Announcement] @connection(keyName: "byCourse", fields: ["id"])
 }
