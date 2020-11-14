@@ -11,8 +11,7 @@ import {
   import AddLessons from "./AddNewCourse/AddLessons";
   
 import { API, graphqlOperation } from 'aws-amplify';
-import { createLesson, updateLesson} from '../../graphql/mutations';
-import { listLessons } from '../../graphql/queries';
+
  
   class AddNewCourse extends Component {
 
