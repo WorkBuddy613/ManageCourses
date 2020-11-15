@@ -1,5 +1,24 @@
 import React, { Component } from "react";
 import ReactModal from 'react-modal-resizable-draggable';
+import { API, graphqlOperation } from 'aws-amplify';
+import { createCourse, updateCourse} from '../../graphql/mutations';
+import { listCourses } from '../../graphql/queries';
+
+
+// const updatedTodoDetails = { id: "id1", description:"Updated todo info"};
+// const updatedTodo = await API.graphql(graphqlOperation(updateTodo, {input: updatedTodoDetails}));
+
+
+async function updateSelectedCourse(CourseSyllabus){
+    console.log("in UpdateSelectedCourse");
+    const updatedCourseSyllabusDetails = { 
+      id: CourseSyllabus.CourseID,
+      syllabus: CourseSyllabus.syllabus
+    };
+    console.log(updatedCourseSyllabusDetails);
+    const updatedCourse = await API.graphql(graphqlOperation(updateCourse, {input: updatedCourseSyllabusDetails}));    
+    console.log("new Course Syllabus created in database successfully", updatedCourse);
+  }
 
 class AddSyllabus extends Component {
 
@@ -23,6 +42,11 @@ class AddSyllabus extends Component {
         this.setState({modalIsOpen: false});
     }
     addSyllabus(){
+        var CourseSyllabus = {
+            CourseID: this.props.NewCourseId_Syllabus,
+            syllabus: this.state.newText
+          }
+        updateSelectedCourse(CourseSyllabus);
         this.setState({text: this.state.newText});
         this.setState({newText: ""});
     }

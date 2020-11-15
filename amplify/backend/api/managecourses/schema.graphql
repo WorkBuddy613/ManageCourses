@@ -1,8 +1,13 @@
 type Course @model {
   id: ID!
-  title: String!
-  introduction: String!
-  syllabus: String!
+  title: String
+  introduction: String
+  imagelink: String
+  instructor: String 
+  learners: [String]
+  tags: [String]
+  syllabus: String
+  username: String
   lessons: [Lesson] @connection(keyName: "byCourse", fields: ["id"])
   announcements: [Announcement] @connection(keyName: "byCourse", fields: ["id"])
 }
@@ -10,6 +15,7 @@ type Course @model {
 type Announcement @model @key(name: "byCourse", fields: ["courseID"]){
   id: ID!
   content: String!
+  publishTime: String!
   courseID: ID!
   course: Course @connection(fields: ["courseID"])
 }

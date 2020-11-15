@@ -7,7 +7,12 @@ export const getCourse = /* GraphQL */ `
       id
       title
       introduction
+      imagelink
+      instructor
+      learners
+      tags
       syllabus
+      username
       lessons {
         items {
           id
@@ -25,6 +30,7 @@ export const getCourse = /* GraphQL */ `
         items {
           id
           content
+          publishTime
           courseID
           createdAt
           updatedAt
@@ -47,7 +53,12 @@ export const listCourses = /* GraphQL */ `
         id
         title
         introduction
+        imagelink
+        instructor
+        learners
+        tags
         syllabus
+        username
         lessons {
           nextToken
         }
@@ -66,12 +77,18 @@ export const getAnnouncement = /* GraphQL */ `
     getAnnouncement(id: $id) {
       id
       content
+      publishTime
       courseID
       course {
         id
         title
         introduction
+        imagelink
+        instructor
+        learners
+        tags
         syllabus
+        username
         lessons {
           nextToken
         }
@@ -96,12 +113,18 @@ export const listAnnouncements = /* GraphQL */ `
       items {
         id
         content
+        publishTime
         courseID
         course {
           id
           title
           introduction
+          imagelink
+          instructor
+          learners
+          tags
           syllabus
+          username
           createdAt
           updatedAt
         }
@@ -125,7 +148,12 @@ export const getLesson = /* GraphQL */ `
         id
         title
         introduction
+        imagelink
+        instructor
+        learners
+        tags
         syllabus
+        username
         lessons {
           nextToken
         }
@@ -169,7 +197,12 @@ export const listLessons = /* GraphQL */ `
           id
           title
           introduction
+          imagelink
+          instructor
+          learners
+          tags
           syllabus
+          username
           createdAt
           updatedAt
         }
@@ -199,7 +232,12 @@ export const getComment = /* GraphQL */ `
           id
           title
           introduction
+          imagelink
+          instructor
+          learners
+          tags
           syllabus
+          username
           createdAt
           updatedAt
         }

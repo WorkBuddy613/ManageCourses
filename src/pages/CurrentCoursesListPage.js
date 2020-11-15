@@ -7,7 +7,7 @@ class CurrentCoursesListPage extends Component {
     super(props);
     this.state = {
         select_id:0,
-        courses: this.props.CourseList
+        courses:[{id:0},{id:1 + Math.random, name: "Chest Workout"}]
     };
   
   }
@@ -23,7 +23,7 @@ class CurrentCoursesListPage extends Component {
             </select>
             <BrowserRouter>
               <Link to="/CurrentCourseListPage/CurrentCourse"><button className="In-Modal-button" type="button" disabled={!(this.state.select_id)}>Update</button></Link>
-              <Route path="/CurrentCourseListPage/CurrentCourse" component={()=><CurrentCourse selectedCourseIntroduction={this.props.CourseList.map(el => (el.id === this.state.select_id) ? el.introduction : el[1])} selectedCourseSyllabus={this.props.CourseList.map(el => (el.id === this.state.select_id) ? el.syllabus : el[1])} selectedCourseAnnoucementList={this.props.CourseList.map(el => (el.id === this.state.select_id) ? el.AnnoucementList : el[1])} selectedCourseLessonList={this.props.CourseList.map(el => (el.id === this.state.select_id) ? el.LessonList : el[1])}/>}/>
+              <Route path="/CurrentCourseListPage/CurrentCourse" component={()=><CurrentCourse/>}/>
             </BrowserRouter>
           </div>
       </div>

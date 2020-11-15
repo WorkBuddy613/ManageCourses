@@ -12,7 +12,7 @@ async function createNewLesson(lesson){
       likeCount: 0,
       videoLink: lesson.videoLink,
       content: lesson.content,
-      courseID: "b203fac1-4d9a-40af-9755-3390d4ba73ec",
+      courseID: lesson.courseID
       
       //courseId, course, comments is now empty
     };
@@ -30,7 +30,7 @@ async function createNewLesson(lesson){
 
 async function listCurrentLessons(){ 
     const allLessons = await API.graphql(graphqlOperation(listLessons));
-    console.log("Fetch current comments from database successfully", allLessons);
+    console.log("Fetch current lessons from database successfully", allLessons);
     return allLessons;
 }
 
@@ -42,21 +42,22 @@ class AddLessons extends Component {
     lesson_add:"",
     add_link:"",
     modalIsOpen: false,
-    LessonList:[{id:0}]};
-  listCurrentLessons().then((evt) => {
-                evt.data.listLessons.items.map((lesson, i)=> {
-                    this.state.LessonList.push({
-                      id: lesson.id, 
-                      add_description: lesson.content,
-                      lesson_add: lesson.title,
-                      add_link: lesson.videoLink
-                    });
-                });
-                this.setState({
-                    LessonList: this.state.LessonList
-                })
-            }) 
-  
+    LessonList:[{id:0}]
+  };
+    listCurrentLessons().then((evt) => {
+      evt.data.listLessons.items.map((lesson, i) => {
+          this.state.LessonList.push({
+            lesson_id: lesson.id, 
+            lesson_description: lesson.content,
+            lesson_title: lesson.title,
+            lesson_videolink: lesson.videoLink,
+            lesson_courseId: lesson.courseID
+          });
+      });
+      this.setState({
+          LessonList: this.state.LessonList
+      })
+   }); 
   this.openModal = this.openModal.bind(this);
   this.closeModal = this.closeModal.bind(this);
   this.addLesson =this.addLesson.bind(this);
@@ -75,11 +76,12 @@ addLesson() {
   var lesson = {
     title: this.state.lesson_add,
     videoLink: this.state.add_link,
-    content: this.state.add_description
+    content: this.state.add_description,
+    courseID: this.props.NewCourseId_Lesson
   }
   createNewLesson(lesson);
-  var key = 1+ Math.floor(Math.random() * (100000-1));
-  this.setState({LessonList :this.state.LessonList.concat({id: Math.random + key,lesson: this.state.lesson_add, videoLink: this.state.add_link, text:this.state.add_description})});
+  // var key = 1+ Math.floor(Math.random() * (100000-1));
+  this.setState({LessonList :this.state.LessonList.concat({lesson_courseId: this.props.NewCourseId_Lesson,lesson_title: this.state.lesson_add, lesson_videolink: this.state.add_link, lesson_description:this.state.add_description})});
   this.setState({add_description:""});
   this.setState({add_link:""});
   this.setState({lesson_add:""});
@@ -108,7 +110,7 @@ render() {
                       <div><button className="Modal-close-button" onClick={this.closeModal}> Done </button></div>       
       </ReactModal>
       <h2> Lessons </h2>
-      {this.state.LessonList.map((Lesson) => <LessonIterator id={Lesson.id} videoLink={Lesson.videoLink} title={Lesson.lesson} text={Lesson.text}/>)}
+    {this.state.LessonList.map((Lesson,i) => {return Lesson.lesson_courseId === this.props.NewCourseId_Lesson ? <LessonIterator id={Lesson.lesson_id} videoLink={Lesson.lesson_videolink} title={Lesson.lesson_title} text={Lesson.lesson_description}/>: ""})}
     </div>
   );
 }

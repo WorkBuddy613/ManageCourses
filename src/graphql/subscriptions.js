@@ -7,7 +7,12 @@ export const onCreateCourse = /* GraphQL */ `
       id
       title
       introduction
+      imagelink
+      instructor
+      learners
+      tags
       syllabus
+      username
       lessons {
         items {
           id
@@ -25,6 +30,7 @@ export const onCreateCourse = /* GraphQL */ `
         items {
           id
           content
+          publishTime
           courseID
           createdAt
           updatedAt
@@ -42,7 +48,12 @@ export const onUpdateCourse = /* GraphQL */ `
       id
       title
       introduction
+      imagelink
+      instructor
+      learners
+      tags
       syllabus
+      username
       lessons {
         items {
           id
@@ -60,6 +71,7 @@ export const onUpdateCourse = /* GraphQL */ `
         items {
           id
           content
+          publishTime
           courseID
           createdAt
           updatedAt
@@ -77,7 +89,12 @@ export const onDeleteCourse = /* GraphQL */ `
       id
       title
       introduction
+      imagelink
+      instructor
+      learners
+      tags
       syllabus
+      username
       lessons {
         items {
           id
@@ -95,6 +112,7 @@ export const onDeleteCourse = /* GraphQL */ `
         items {
           id
           content
+          publishTime
           courseID
           createdAt
           updatedAt
@@ -111,12 +129,18 @@ export const onCreateAnnouncement = /* GraphQL */ `
     onCreateAnnouncement {
       id
       content
+      publishTime
       courseID
       course {
         id
         title
         introduction
+        imagelink
+        instructor
+        learners
+        tags
         syllabus
+        username
         lessons {
           nextToken
         }
@@ -136,12 +160,18 @@ export const onUpdateAnnouncement = /* GraphQL */ `
     onUpdateAnnouncement {
       id
       content
+      publishTime
       courseID
       course {
         id
         title
         introduction
+        imagelink
+        instructor
+        learners
+        tags
         syllabus
+        username
         lessons {
           nextToken
         }
@@ -161,12 +191,18 @@ export const onDeleteAnnouncement = /* GraphQL */ `
     onDeleteAnnouncement {
       id
       content
+      publishTime
       courseID
       course {
         id
         title
         introduction
+        imagelink
+        instructor
+        learners
+        tags
         syllabus
+        username
         lessons {
           nextToken
         }
@@ -194,7 +230,12 @@ export const onCreateLesson = /* GraphQL */ `
         id
         title
         introduction
+        imagelink
+        instructor
+        learners
+        tags
         syllabus
+        username
         lessons {
           nextToken
         }
@@ -233,7 +274,12 @@ export const onUpdateLesson = /* GraphQL */ `
         id
         title
         introduction
+        imagelink
+        instructor
+        learners
+        tags
         syllabus
+        username
         lessons {
           nextToken
         }
@@ -272,7 +318,12 @@ export const onDeleteLesson = /* GraphQL */ `
         id
         title
         introduction
+        imagelink
+        instructor
+        learners
+        tags
         syllabus
+        username
         lessons {
           nextToken
         }
@@ -314,7 +365,12 @@ export const onCreateComment = /* GraphQL */ `
           id
           title
           introduction
+          imagelink
+          instructor
+          learners
+          tags
           syllabus
+          username
           createdAt
           updatedAt
         }
@@ -347,7 +403,12 @@ export const onUpdateComment = /* GraphQL */ `
           id
           title
           introduction
+          imagelink
+          instructor
+          learners
+          tags
           syllabus
+          username
           createdAt
           updatedAt
         }
@@ -380,7 +441,12 @@ export const onDeleteComment = /* GraphQL */ `
           id
           title
           introduction
+          imagelink
+          instructor
+          learners
+          tags
           syllabus
+          username
           createdAt
           updatedAt
         }

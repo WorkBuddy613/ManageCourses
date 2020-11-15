@@ -6,7 +6,7 @@ class RemoveCourse extends Component {
     
     this.state = {
         remove_id:0,
-        courses: this.props.CourseList
+        courses:[{id:0},{id:1 + Math.random, name: "Chest Workout"}]
     };
     
     this.removeCourse = this.removeCourse.bind(this);

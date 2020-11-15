@@ -8,18 +8,23 @@ import { createCourse, updateCourse} from '../../graphql/mutations';
 import { listCourses } from '../../graphql/queries';
 
 
-async function createNewCourse(course){
-    console.log("in createNewCourse", course);
-    const newCourseDetails = { 
-      title: course.title,
-      introduction: course.introduction,
-      syllabus: ""
-      //courseId, course, comments is now empty
+// const updatedTodoDetails = { id: "id1", description:"Updated todo info"};
+// const updatedTodo = await API.graphql(graphqlOperation(updateTodo, {input: updatedTodoDetails}));
+
+
+async function updateSelectedCourse(CourseIntroduction){
+    console.log("in UpdateSelectedCourse");
+    const updatedCourseIntroductionDetails = { 
+      id: CourseIntroduction.CourseID,
+      title: CourseIntroduction.title,
+      introduction: CourseIntroduction.introduction,
+      imagelink: CourseIntroduction.imagelink
+      //comments is now empty
     };
-    console.log(newCourseDetails);
-    const newCourse = await API.graphql(graphqlOperation(createCourse, {input: newCourseDetails}));    
-    console.log("new Course created in database successfully", newCourse);
-}
+    console.log(updatedCourseIntroductionDetails);
+    const updatedCourse = await API.graphql(graphqlOperation(updateCourse, {input: updatedCourseIntroductionDetails}));    
+    console.log("new Course Introduction created in database successfully", updatedCourse);
+  }
 
 class AddIntroduction extends Component {
 
@@ -63,17 +68,21 @@ class AddIntroduction extends Component {
     }
     addIntroduction(){
         // eslint-disable-next-line no-lone-blocks
-
+        var CourseIntroduction = {
+            CourseID: this.props.NewCourseId_Introduction,
+            title: this.state.new_title,
+            imagelink: this.state.new_image,
+            introduction: this.state.new_Description
+          }
+        updateSelectedCourse(CourseIntroduction);
         {this.state.new_title ? this.setState({title: this.state.new_title}) : this.setState({new_title: ""})};
         {this.state.new_image ? this.setState({image: this.state.new_image}) : this.setState({new_title: ""})};
         {this.state.new_Description ? this.setState({Description: this.state.new_Description}) : this.setState({new_Description: ""})};
-        createNewCourse({
-            title: this.state.new_title,
-            introduction: this.state.new_Description,
-        });
     }
 
     render() {
+        //console.log("Course ID is")
+        //console.log(this.props.NewCourseId_Introduction)
         return (
             <div className="Intro_Page">
                 <button className="Modal-open-button" onClick={this.openModal}> Add Course Introduction </button>
