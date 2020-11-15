@@ -11,7 +11,7 @@ import AddNewCourse from "./AddNewCourse";
 import RemoveCourse from "./RemoveCourse";
 import Amplify, { Auth } from 'aws-amplify';   
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'; 
-import awsconfig from '../../aws-exports';
+import awsconfig from '../aws-exports';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createCourse, updateCourse} from '../graphql/mutations';
 import { listCourses } from '../graphql/queries';
