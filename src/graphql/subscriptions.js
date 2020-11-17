@@ -10,9 +10,17 @@ export const onCreateCourse = /* GraphQL */ `
       imagelink
       instructor
       learners
-      tags
       syllabus
-      username
+      tags {
+        items {
+          id
+          content
+          courseID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       lessons {
         items {
           id
@@ -51,9 +59,17 @@ export const onUpdateCourse = /* GraphQL */ `
       imagelink
       instructor
       learners
-      tags
       syllabus
-      username
+      tags {
+        items {
+          id
+          content
+          courseID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       lessons {
         items {
           id
@@ -92,9 +108,17 @@ export const onDeleteCourse = /* GraphQL */ `
       imagelink
       instructor
       learners
-      tags
       syllabus
-      username
+      tags {
+        items {
+          id
+          content
+          courseID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       lessons {
         items {
           id
@@ -124,6 +148,99 @@ export const onDeleteCourse = /* GraphQL */ `
     }
   }
 `;
+export const onCreateTag = /* GraphQL */ `
+  subscription OnCreateTag {
+    onCreateTag {
+      id
+      content
+      courseID
+      course {
+        id
+        title
+        introduction
+        imagelink
+        instructor
+        learners
+        syllabus
+        tags {
+          nextToken
+        }
+        lessons {
+          nextToken
+        }
+        announcements {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTag = /* GraphQL */ `
+  subscription OnUpdateTag {
+    onUpdateTag {
+      id
+      content
+      courseID
+      course {
+        id
+        title
+        introduction
+        imagelink
+        instructor
+        learners
+        syllabus
+        tags {
+          nextToken
+        }
+        lessons {
+          nextToken
+        }
+        announcements {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTag = /* GraphQL */ `
+  subscription OnDeleteTag {
+    onDeleteTag {
+      id
+      content
+      courseID
+      course {
+        id
+        title
+        introduction
+        imagelink
+        instructor
+        learners
+        syllabus
+        tags {
+          nextToken
+        }
+        lessons {
+          nextToken
+        }
+        announcements {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateAnnouncement = /* GraphQL */ `
   subscription OnCreateAnnouncement {
     onCreateAnnouncement {
@@ -138,9 +255,10 @@ export const onCreateAnnouncement = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -169,9 +287,10 @@ export const onUpdateAnnouncement = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -200,9 +319,10 @@ export const onDeleteAnnouncement = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -233,9 +353,10 @@ export const onCreateLesson = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -277,9 +398,10 @@ export const onUpdateLesson = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -321,9 +443,10 @@ export const onDeleteLesson = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -368,9 +491,7 @@ export const onCreateComment = /* GraphQL */ `
           imagelink
           instructor
           learners
-          tags
           syllabus
-          username
           createdAt
           updatedAt
         }
@@ -406,9 +527,7 @@ export const onUpdateComment = /* GraphQL */ `
           imagelink
           instructor
           learners
-          tags
           syllabus
-          username
           createdAt
           updatedAt
         }
@@ -444,9 +563,7 @@ export const onDeleteComment = /* GraphQL */ `
           imagelink
           instructor
           learners
-          tags
           syllabus
-          username
           createdAt
           updatedAt
         }

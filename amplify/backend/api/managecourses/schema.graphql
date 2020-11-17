@@ -5,11 +5,17 @@ type Course @model {
   imagelink: String
   instructor: String 
   learners: [String]
-  tags: [String]
   syllabus: String
-  username: String
+  tags: [Tag] @connection(keyName: "byCourse", fields: ["id"])
   lessons: [Lesson] @connection(keyName: "byCourse", fields: ["id"])
   announcements: [Announcement] @connection(keyName: "byCourse", fields: ["id"])
+}
+
+type Tag @model @key(name: "byCourse", fields: ["courseID"]){
+  id: ID!
+  content: String!
+  courseID: ID!
+  course: Course @connection(fields: ["courseID"])
 }
 
 type Announcement @model @key(name: "byCourse", fields: ["courseID"]){

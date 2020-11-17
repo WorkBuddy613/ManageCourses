@@ -66,8 +66,8 @@ class ManageCoursePage extends Component {
           </ul>
           <div className="ManageCoursePagecontent">
             <Route path="/AddNewCourse" component={() => <AddNewCourse CourseId= {this.state.addNewCourseId}/>}/>
-            <Route path="/CurrentCoursesListPage" component={() => <CurrentCoursesListPage/>} />
-            <Route path="/RemoveCourse" component={() => <RemoveCourse/>}/>
+            <Route path="/CurrentCoursesListPage" component={() => <CurrentCoursesListPage instructor_uname={this.state.instructor_username}/>} />
+            <Route path="/RemoveCourse" component={() => <RemoveCourse instructor_uname={this.state.instructor_username}/>}/>
           </div>
         </div>
       </BrowserRouter>

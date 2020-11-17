@@ -39,7 +39,7 @@ class AddAnnouncements extends Component {
         modalIsOpen: false,
         add: "",
         remove: 0,
-        AnnouncementList:[{id:0}]
+        AnnouncementList:[]
     };
 
     listCurrentAnnouncements().then((evt) => {
@@ -78,7 +78,7 @@ class AddAnnouncements extends Component {
     }
     createNewAnnoucement(announcement);
     //var key = 1+ Math.floor(Math.random() * (100000-1));
-    console.log("Announcement list 01", this.state.AnnouncementList);
+    //console.log("Announcement list 01", this.state.AnnouncementList);
     this.setState({AnnouncementList :this.state.AnnouncementList.concat({announcement_courseId: this.props.NewCourseId_Announcements, announcement_description:this.state.add, announcement_datetime: moment().format("DD-MM-YYYY hh:mm:ss")})});
     console.log("Announcement list", this.state.AnnouncementList)
     this.setState({add:""});

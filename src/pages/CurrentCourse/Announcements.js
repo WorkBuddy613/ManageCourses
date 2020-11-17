@@ -1,7 +1,46 @@
 import React, { Component } from "react";
 import ReactModal from 'react-modal-resizable-draggable';
 import moment from "moment";
- 
+import { API, graphqlOperation } from 'aws-amplify';
+import { createAnnouncement, updateAnnouncement, deleteAnnouncement} from '../../graphql/mutations';
+import { listAnnouncements } from '../../graphql/queries';
+
+async function createNewAnnoucement(announcement){
+    console.log("in createNewLesson", announcement);
+    const newAnnouncementDetails = { 
+      content: announcement.content,
+      courseID: announcement.courseID,
+      publishTime: announcement.datetime
+      //courseId, course, comments is now empty
+    };
+    console.log(newAnnouncementDetails);
+    const newAnnouncement = await API.graphql(graphqlOperation(createAnnouncement, {input: newAnnouncementDetails}));  
+    /*
+    createLesson learning note:
+    1. AppSync will generate created&updatedAt automatically here 
+    2. graphqlOperation is a helper function. 
+    Without it, it wil look more verbose like ⬇️: //But seems fine haha
+    const newTodo = awiat API.graphql({ query: createTodo, variable: {input: todoDetails}})  
+    */    
+    console.log("new announcement created in database successfully", newAnnouncement);
+}
+
+async function deleteSelectedAnnouncement(Announcement){
+  console.log("in deleteSelectedAnnouncement", Announcement);
+  const deleteAnnouncementDetails = { 
+    id: Announcement.announcementID
+  };
+  console.log(deleteAnnouncementDetails);
+  const deletedAnnouncement = await API.graphql(graphqlOperation(deleteAnnouncement, {input: deleteAnnouncementDetails}));    
+  console.log(" Announcement removed in database successfully", deletedAnnouncement);
+}
+
+async function listCurrentAnnouncements(){ 
+    const allAnnouncements = await API.graphql(graphqlOperation(listAnnouncements));
+    console.log("Fetch current announcment from database successfully", allAnnouncements);
+    return allAnnouncements;
+}
+
 class Announcements extends Component {
 
   constructor() {
@@ -9,15 +48,30 @@ class Announcements extends Component {
     this.state = {
         modalIsOpen:false,
         add: "",
-        remove: 0,
-        AnnouncementList:[{id:0},{id: Math.random + 21 ,text: "Lay on a flat bench, gripping dumbbells in each hand. Press the weights up above your chest, keeping them from touching, with your pinkies turned slightly inward. Maintain full body tension on the bench", datetime:"25-10-2020 08:55:03"},{id: Math.random + 422, text:"Lay on a flat bench, gripping dumbbells in each hand. Press the weights up above your chest, keeping them from touching, with your pinkies turned slightly inward. Maintain full body tension on the bench", datetime:"27-10-2020 08:55:03"}]
+        remove_id: "",
+        AnnouncementList:[]
     };
+
+    listCurrentAnnouncements().then((evt) => {
+      evt.data.listAnnouncements.items.map((announcement, i) => {
+          this.state.AnnouncementList.push({
+            announcement_id: announcement.id, 
+            announcement_description: announcement.content,
+            announcement_courseId: announcement.courseID,
+            announcement_datetime: announcement.publishTime
+          });
+      });
+      this.setState({
+          AnnouncementList: this.state.AnnouncementList
+      })
+   }); 
 
     
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.addAnnoucments =this.addAnnoucments.bind(this);
     this.removeAnnoucments =this.removeAnnoucments.bind(this);
+    //this.buffer =this.buffer.bind(this);
     
   }
 
@@ -30,15 +84,27 @@ class Announcements extends Component {
   }
 
   addAnnoucments() {
-    var key = 1+ Math.floor(Math.random() * (100000-1));
-    this.setState({AnnouncementList :this.state.AnnouncementList.concat({id: Math.random + key,text:this.state.add, datetime: moment().format("DD-MM-YYYY hh:mm:ss")})});
+    var announcement = {
+      content: this.state.add,
+      courseID: this.props.CourseId_Announcements,
+      datetime: moment().format("DD-MM-YYYY hh:mm:ss")
+    }
+    createNewAnnoucement(announcement);
+    //var key = 1+ Math.floor(Math.random() * (100000-1));
+    this.setState({AnnouncementList :this.state.AnnouncementList.concat({announcement_courseId: this.props.CourseId_Announcements, announcement_description:this.state.add, announcement_datetime: moment().format("DD-MM-YYYY hh:mm:ss")})});
+    console.log("Announcement list", this.state.AnnouncementList);
     this.setState({add:""});
   }
 
   removeAnnoucments() {
-    const newAnnoucementList = this.state.AnnouncementList.filter(Announcement => Announcement.id !== this.state.remove);
+    var Announcement = {
+      announcementID: this.state.remove_id
+    }
+
+    deleteSelectedAnnouncement(Announcement);
+    const newAnnoucementList = this.state.AnnouncementList.filter(Announcement => Announcement.announcement_id !== this.state.remove_id);
     this.setState({AnnouncementList: newAnnoucementList});
-    this.setState({remove: 0});
+    this.setState({remove_id: ""});
   }
 
   render() {
@@ -54,16 +120,17 @@ class Announcements extends Component {
                     </div>
                     <div>
                     <label> Remove Announcements: </label>
-                    <select value={this.state.value} onChange={event =>this.setState({remove: event.target.value})}>
-                    {this.state.AnnouncementList.map(Announcement => (<option key={Announcement.id} value={Announcement.id} >{Announcement.text}</option>))}
+                    <select value={this.state.value} onChange={event =>this.setState({remove_id: event.target.value})}>
+                    <option>{"NONE"}</option>
+                    {this.state.AnnouncementList.map((Announcement,i) => {return Announcement.announcement_courseId === this.props.CourseId_Announcements ? (<option key={i} value={Announcement.announcement_id} >{Announcement.announcement_description}</option>) : ""})}
                     </select>
-                    <button className="In-Modal-button" type="button" onClick={this.removeAnnoucments} disabled={!this.state.remove}> Remove </button>
+                    <button className="In-Modal-button" type="button" onClick={this.removeAnnoucments} disabled={!this.state.remove_id}> Remove </button>
                     </div>
                     <div><button className="Modal-close-button" onClick={this.closeModal}> Done </button></div>
                     
         </ReactModal>
         <h2> Announcements </h2>
-    {this.state.AnnouncementList.map(Announcement => (<div key={Announcement.id}><p>{Announcement.text}<div>{Announcement.datetime}</div></p></div>))}
+        {this.state.AnnouncementList.map((Announcement,i) => {return Announcement.announcement_courseId === this.props.CourseId_Announcements ? (<div><p>{Announcement.announcement_description}<div>{Announcement.announcement_datetime}</div></p></div>): ""})}
       </div>
     );
   }

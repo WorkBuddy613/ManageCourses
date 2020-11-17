@@ -42,7 +42,7 @@ class AddLessons extends Component {
     lesson_add:"",
     add_link:"",
     modalIsOpen: false,
-    LessonList:[{id:0}]
+    LessonList:[]
   };
     listCurrentLessons().then((evt) => {
       evt.data.listLessons.items.map((lesson, i) => {

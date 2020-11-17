@@ -10,9 +10,17 @@ export const getCourse = /* GraphQL */ `
       imagelink
       instructor
       learners
-      tags
       syllabus
-      username
+      tags {
+        items {
+          id
+          content
+          courseID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       lessons {
         items {
           id
@@ -56,14 +64,75 @@ export const listCourses = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
         announcements {
           nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getTag = /* GraphQL */ `
+  query GetTag($id: ID!) {
+    getTag(id: $id) {
+      id
+      content
+      courseID
+      course {
+        id
+        title
+        introduction
+        imagelink
+        instructor
+        learners
+        syllabus
+        tags {
+          nextToken
+        }
+        lessons {
+          nextToken
+        }
+        announcements {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listTags = /* GraphQL */ `
+  query ListTags(
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTags(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        content
+        courseID
+        course {
+          id
+          title
+          introduction
+          imagelink
+          instructor
+          learners
+          syllabus
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
@@ -86,9 +155,10 @@ export const getAnnouncement = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -122,9 +192,7 @@ export const listAnnouncements = /* GraphQL */ `
           imagelink
           instructor
           learners
-          tags
           syllabus
-          username
           createdAt
           updatedAt
         }
@@ -151,9 +219,10 @@ export const getLesson = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -200,9 +269,7 @@ export const listLessons = /* GraphQL */ `
           imagelink
           instructor
           learners
-          tags
           syllabus
-          username
           createdAt
           updatedAt
         }
@@ -235,9 +302,7 @@ export const getComment = /* GraphQL */ `
           imagelink
           instructor
           learners
-          tags
           syllabus
-          username
           createdAt
           updatedAt
         }

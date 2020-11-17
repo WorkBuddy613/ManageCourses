@@ -13,9 +13,17 @@ export const createCourse = /* GraphQL */ `
       imagelink
       instructor
       learners
-      tags
       syllabus
-      username
+      tags {
+        items {
+          id
+          content
+          courseID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       lessons {
         items {
           id
@@ -57,9 +65,17 @@ export const updateCourse = /* GraphQL */ `
       imagelink
       instructor
       learners
-      tags
       syllabus
-      username
+      tags {
+        items {
+          id
+          content
+          courseID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       lessons {
         items {
           id
@@ -101,9 +117,17 @@ export const deleteCourse = /* GraphQL */ `
       imagelink
       instructor
       learners
-      tags
       syllabus
-      username
+      tags {
+        items {
+          id
+          content
+          courseID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       lessons {
         items {
           id
@@ -133,6 +157,108 @@ export const deleteCourse = /* GraphQL */ `
     }
   }
 `;
+export const createTag = /* GraphQL */ `
+  mutation CreateTag(
+    $input: CreateTagInput!
+    $condition: ModelTagConditionInput
+  ) {
+    createTag(input: $input, condition: $condition) {
+      id
+      content
+      courseID
+      course {
+        id
+        title
+        introduction
+        imagelink
+        instructor
+        learners
+        syllabus
+        tags {
+          nextToken
+        }
+        lessons {
+          nextToken
+        }
+        announcements {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateTag = /* GraphQL */ `
+  mutation UpdateTag(
+    $input: UpdateTagInput!
+    $condition: ModelTagConditionInput
+  ) {
+    updateTag(input: $input, condition: $condition) {
+      id
+      content
+      courseID
+      course {
+        id
+        title
+        introduction
+        imagelink
+        instructor
+        learners
+        syllabus
+        tags {
+          nextToken
+        }
+        lessons {
+          nextToken
+        }
+        announcements {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteTag = /* GraphQL */ `
+  mutation DeleteTag(
+    $input: DeleteTagInput!
+    $condition: ModelTagConditionInput
+  ) {
+    deleteTag(input: $input, condition: $condition) {
+      id
+      content
+      courseID
+      course {
+        id
+        title
+        introduction
+        imagelink
+        instructor
+        learners
+        syllabus
+        tags {
+          nextToken
+        }
+        lessons {
+          nextToken
+        }
+        announcements {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createAnnouncement = /* GraphQL */ `
   mutation CreateAnnouncement(
     $input: CreateAnnouncementInput!
@@ -150,9 +276,10 @@ export const createAnnouncement = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -184,9 +311,10 @@ export const updateAnnouncement = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -218,9 +346,10 @@ export const deleteAnnouncement = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -254,9 +383,10 @@ export const createLesson = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -301,9 +431,10 @@ export const updateLesson = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -348,9 +479,10 @@ export const deleteLesson = /* GraphQL */ `
         imagelink
         instructor
         learners
-        tags
         syllabus
-        username
+        tags {
+          nextToken
+        }
         lessons {
           nextToken
         }
@@ -398,9 +530,7 @@ export const createComment = /* GraphQL */ `
           imagelink
           instructor
           learners
-          tags
           syllabus
-          username
           createdAt
           updatedAt
         }
@@ -439,9 +569,7 @@ export const updateComment = /* GraphQL */ `
           imagelink
           instructor
           learners
-          tags
           syllabus
-          username
           createdAt
           updatedAt
         }
@@ -480,9 +608,7 @@ export const deleteComment = /* GraphQL */ `
           imagelink
           instructor
           learners
-          tags
           syllabus
-          username
           createdAt
           updatedAt
         }

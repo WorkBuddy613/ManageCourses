@@ -1,27 +1,95 @@
 import React, { Component } from "react";
 import ReactModal from 'react-modal-resizable-draggable';
 
+import { API, graphqlOperation } from 'aws-amplify';
+import { createCourse, updateCourse, createTag, deleteTag} from '../../graphql/mutations';
+import { getCourse, listTags } from '../../graphql/queries';
+
+async function updateSelectedCourse(CourseIntroduction){
+    console.log("in UpdateSelectedCourse");
+    const updatedCourseIntroductionDetails = { 
+      id: CourseIntroduction.CourseID,
+      title: CourseIntroduction.title,
+      introduction: CourseIntroduction.introduction,
+      imagelink: CourseIntroduction.imagelink
+      //comments is now empty
+    };
+    console.log(updatedCourseIntroductionDetails);
+    const updatedCourse = await API.graphql(graphqlOperation(updateCourse, {input: updatedCourseIntroductionDetails}));    
+    console.log("Course Introduction updated in database successfully", updatedCourse);
+  }
+
+  async function CreateCourseTags(CourseTags){
+    console.log("in CreateCourseTags");
+    const CreateCourseTagsDetails = { 
+      courseID: CourseTags.CourseID,
+      content: CourseTags.Tag
+    };
+    console.log(CreateCourseTagsDetails);
+    const createdTag = await API.graphql(graphqlOperation(createTag, {input: CreateCourseTagsDetails}));    
+    console.log("The Course Tags are created in database successfully", createdTag);
+  }
+
+  async function listCurrentTags(){ 
+    console.log("in listCurrentTags");
+    const allTags = await API.graphql(graphqlOperation(listTags));
+    console.log("Fetch current Tags list from database successfully", allTags);
+    return allTags;
+}
+  
+  async function deleteSelectedTag(removeTag){
+    console.log("in deleteSelectedTag", removeTag);
+    const deleteTagDetails = { 
+      id: removeTag.ID
+    };
+    console.log(deleteTagDetails);
+    const deletedTag = await API.graphql(graphqlOperation(deleteTag, {input: deleteTagDetails}));    
+    console.log(" Tag removed in database successfully", deletedTag);
+  }
+
+  async function getCourseIntroduction(CourseIntroductionFetching_CourseID){ 
+    console.log("in getCourseIntroduction");
+    const CourseIntroductionFetched = await API.graphql(graphqlOperation(getCourse, {id: CourseIntroductionFetching_CourseID}));
+    console.log("Fetch current courses Introduction from database successfully", CourseIntroductionFetched);
+    return CourseIntroductionFetched;
+  }
+
 class Introduction extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             modalIsOpen: false,
-            id: 2313+ Math.random,
-            title: "Chest and Arms Workout",
+            title: "",
             new_title: "",
             Subscription: false,
-            image : "https://image.winudf.com/v2/image/Y29tLmJvdWF6emFvdWkuY2hlc3R3b3Jrb3V0X3NjcmVlbl8wX3V5ZGdoMmd0/screen-0.jpg?fakeurl=1&type=.jpg",
+            image : "",
             new_image: "",
-            Total_Enrollments : 547,
-            Description: "If you want to mix your leg workout with some cardio and core work, this routine is a must-try. The circuit, created by ACE-certified personal trainer Amy Eisinger, starts with a leg-blasting curtsy lunge to lateral lunge combo, before going into a skater (agility and balance work!) and then some core moves.",
+            Total_Enrollments : 0,
+            Description: "",
             new_Description: "",
-            tag_id:0,
             tag_name:"",
-            Tags:[{id:0, name:""},{id: 23394 + Math.random, name:"Accessbility"}]
+            tag_remove_id:"",
+            TagsList:[]
         };
 
+        listCurrentTags().then((evt) => {
+            evt.data.listTags.items.map((Tag, i) => {
+                this.state.TagsList.push({
+                  tag_id: Tag.id, 
+                  tag_name: Tag.content,
+                  tag_courseId: Tag.courseID
+                });
+            });
+            this.setState({
+                TagsList: this.state.TagsList
+            })
+         }); 
+
+        getCourseIntroduction(this.props.CourseId_Introduction).then((evt) => 
+            this.setState({title: evt.data.getCourse.title , image:evt.data.getCourse.imagelink, Description: evt.data.getCourse.introduction, Tags: evt.data.getCourse.tags})
+        )
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -30,7 +98,6 @@ class Introduction extends Component {
         this.updateIntroduction = this.updateIntroduction.bind(this);
     }
 
-
     openModal() {
         this.setState({modalIsOpen: true});
     }
@@ -38,26 +105,46 @@ class Introduction extends Component {
         this.setState({modalIsOpen: false});
     }
     addTag() {
-        var key = 1+ Math.floor(Math.random() * (100000-1));
-        this.setState({Tags :this.state.Tags.concat({id: Math.random + key, name: this.state.tag_name})});
-        this.setState({tag_id:0});
+        console.log("Tag are", this.state.TagsList);
+        var CourseTags = {
+            CourseID: this.props.CourseId_Introduction,
+            Tag: this.state.tag_name
+        }
+        CreateCourseTags(CourseTags);
+        this.setState({TagsList :this.state.TagsList.concat({tag_courseId: this.props.CourseId_Introduction, tag_name: this.state.tag_name})});
+        //console.log("Tag are 2", this.state.TagsList);
         this.setState({tag_name:""});
     } 
+
     removeTag() {
-        const newTags = this.state.Tags.filter(Tag => Tag.id !== this.state.tag_id);
-        this.setState({Tags: newTags});
-        this.setState({tag_id:0});
+        var removeTag = {
+            ID: this.state.tag_remove_id
+          }
+          deleteSelectedTag(removeTag);
+        const newTags = this.state.TagsList.filter(Tag => Tag.tag_id !== this.state.tag_remove_id);
+        this.setState({TagsList: newTags});
+        this.setState({tag_remove_id:""});
     }
     
     updateIntroduction(){
-        // eslint-disable-next-line no-lone-blocks
-        {this.state.new_title ? this.setState({title: this.state.new_title}) : this.setState({new_title: ""})};
-        {this.state.new_image ? this.setState({image: this.state.new_image}) : this.setState({new_title: ""})};
-        {this.state.new_Description ? this.setState({Description: this.state.new_Description}) : this.setState({new_Description: ""})};
+        var CourseIntroduction = {
+            CourseID: this.props.CourseId_Introduction,
+            title:this.state.new_title === "" ? this.state.title :this.state.new_title,
+            imagelink: this.state.new_image  === "" ? this.state.image : this.state.new_image,
+            introduction: this.state.new_Description  === "" ? this.state.Description :this.state.new_Description
+          }
+        updateSelectedCourse(CourseIntroduction);
+        this.setState({title: this.state.new_title === "" ? this.state.title :this.state.new_title});
+        this.setState({image: this.state.new_image  === "" ? this.state.image : this.state.new_image});
+        this.setState({Description: this.state.new_Description  === "" ? this.state.Description :this.state.new_Description});
+        this.setState({new_title: ""});
+        this.setState({new_image: ""});
+        this.setState({new_Description: ""});
     }
 
 
     render() {
+        //console.log("COurse Id is", this.props.courseId);
         return (
             <div className="Intro_Page">
                 <button className="Modal-open-button" onClick={this.openModal}> Edit Course Introduction </button>
@@ -84,10 +171,11 @@ class Introduction extends Component {
                         </div>
                         <div>
                             <label>Remove Tag: </label>
-                            <select value={this.state.value} onChange={event =>this.setState({ tag_id: event.target.value})}>
-                            {this.state.Tags.map(Tag => (<option key={Tag.id} value={Tag.id} >{Tag.name}</option>))}
+                            <select value={this.state.value} onChange={event =>this.setState({ tag_remove_id: event.target.value})}>
+                            <option>{"NONE"}</option>
+                            {this.state.TagsList.map((Tag,i) => {return Tag.tag_courseId === this.props.CourseId_Introduction ? (<option key={i} value={Tag.tag_id} >{Tag.tag_name}</option>): ""})}
                             </select>
-                            <div><button  className="In-Modal-button" type="button" onClick={this.removeTag} disabled={!this.state.tag_id}> Remove </button></div>
+                            <div><button  className="In-Modal-button" type="button" onClick={this.removeTag} disabled={!this.state.tag_remove_id}> Remove </button></div>
                         </div>
                     </div>
                     <button className="Modal-close-button" onClick={this.closeModal}> Done </button>
@@ -98,7 +186,7 @@ class Introduction extends Component {
                     <div>
                     <label> Tags: </label>
                     <ul className="Tags">
-                        {this.state.Tags.map(Tag => <li key={Tag.id}><p>{Tag.name}</p></li>)}
+                        {this.state.TagsList.map((Tag,i) => {return Tag.tag_courseId === this.props.CourseId_Introduction ? <li key={i}><p>{Tag.tag_name}</p></li> : ""})}
                     </ul>
                     </div>
                     <h4 class="pos-left">Total Enrollments are {this.state.Total_Enrollments}</h4>

@@ -21,25 +21,27 @@ async function listCurrentCourses(){
 
 
 class RemoveCourse extends Component {
-    constructor() {
-    super();
+    constructor(props) {
+    super(props);
     
     this.state = {
-        remove_id:0,
+        remove_id:"",
+        instructor_username: this.props.instructor_uname,
         courseList:[]
     };
+    
     listCurrentCourses().then((evt) => {
       evt.data.listCourses.items.map((course, i) => {
           this.state.courseList.push({
             course_id: course.id, 
             course_title: course.title,
+            course_instructor: course.instructor
           });
       });
       this.setState({
           courseList: this.state.courseList
       })
    }); 
-    console.log("LIST@", this.state.courseList)
     this.removeCourse = this.removeCourse.bind(this);
   
   }
@@ -50,7 +52,7 @@ class RemoveCourse extends Component {
     }
     deleteSelectedCourse(course);
     var newCourseList = this.state.courseList.filter(Course => Course.course_id !== this.state.remove_id);
-    this.setState({remove_id:0});
+    this.setState({remove_id:""});
     this.setState({courseList: newCourseList});
 }
 
@@ -62,7 +64,8 @@ class RemoveCourse extends Component {
           <div>
             <label>Select a course:</label>
             <select value={this.state.value} onChange={event =>this.setState({remove_id: event.target.value})}>
-              {this.state.courseList.map((Course,i) => (<option className="option" key={i} value={Course.course_id}>{Course.course_title}</option>))}
+            <option>{"NONE"}</option>
+              {this.state.courseList.map((Course,i) => {return Course.course_instructor === this.state.instructor_username ? (<option className="option" key={i} value={Course.course_id}>{Course.course_title}</option>) : ""})}
             </select>
             <div><button className="In-Modal-button" type="button" onClick={this.removeCourse} disabled={!(this.state.remove_id)}> Remove </button></div>
           </div>

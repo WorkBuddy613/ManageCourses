@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import ReactModal from 'react-modal-resizable-draggable';
 import { API, graphqlOperation } from 'aws-amplify';
 import { createCourse, updateCourse} from '../../graphql/mutations';
-import { listCourses } from '../../graphql/queries';
+import { getCourse, listCourses } from '../../graphql/queries';
 
 
 // const updatedTodoDetails = { id: "id1", description:"Updated todo info"};
 // const updatedTodo = await API.graphql(graphqlOperation(updateTodo, {input: updatedTodoDetails}));
-
 
 async function updateSelectedCourse(CourseSyllabus){
     console.log("in UpdateSelectedCourse");
@@ -20,15 +19,26 @@ async function updateSelectedCourse(CourseSyllabus){
     console.log("new Course Syllabus created in database successfully", updatedCourse);
   }
 
+  async function getCourseSyllabus(CourseSyllabusFetching_CourseID){ 
+    console.log("in getCourseSyllabus");
+    const CourseSyllabusFetched = await API.graphql(graphqlOperation(getCourse, {id: CourseSyllabusFetching_CourseID}));
+    console.log("Fetch current courses syllabus from database successfully", CourseSyllabusFetched);
+    return CourseSyllabusFetched;
+  }
+
 class AddSyllabus extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             modalIsOpen: false,
             text:"",
             newText: ""
         };
+
+        getCourseSyllabus(this.props.NewCourseId_Syllabus).then((evt) => 
+            this.setState({text: evt.data.getCourse.syllabus})
+        );
         
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -44,10 +54,10 @@ class AddSyllabus extends Component {
     addSyllabus(){
         var CourseSyllabus = {
             CourseID: this.props.NewCourseId_Syllabus,
-            syllabus: this.state.newText
+            syllabus:this.state.newText === "" ? this.state.text :this.state.newText
           }
         updateSelectedCourse(CourseSyllabus);
-        this.setState({text: this.state.newText});
+        this.setState({text: this.state.newText === "" ? this.state.text :this.state.newText});
         this.setState({newText: ""});
     }
 
